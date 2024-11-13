@@ -1,18 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var contactLink = document.getElementById('menu-item-54'); // utilisez l’ID approprié
-    var modal = document.getElementById('contact-modal'); // ID de la modale
+    var contactLink = document.getElementById('menu-item-54'); 
+    // var modal = document.getElementById('contact-modal'); 
+    var modal = document.getElementById('contact-modal'); 
+    var contactPrincipal=document.getElementById('contact-principal'); 
+    console.log("je suis dans la modale" + modal)
 
     if (contactLink && modal) {
         contactLink.addEventListener('click', function(event) {
-            event.preventDefault(); // Empêche le chargement de la page
-            modal.style.display = 'block'; // Affiche la modale
+            event.preventDefault(); 
+            // modal.style.display = 'block'; 
+            modal.showModal();
+            contactPrincipal.style.display = 'block'; 
+
         });
     }
 
-    // Ferme la modale quand l’utilisateur clique à l’extérieur ou sur un bouton de fermeture
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
-            modal.style.display = 'none';
+            // modal.style.display = 'none';
+            modal.close();
+            contactPrincipal.style.display = 'none';
+
         }
     });
 });
