@@ -1,0 +1,87 @@
+
+// <div class="photos-apparentees-detail">
+//     <div class="photo-app-conteneur1">
+//         <a href="#" class="lien-photo-app1"><?php the_post_thumbnail( 'meduim',['class' => 'photo-app1'] ); ?></a>
+//     </div>
+//     <div class="photo-app-conteneur2">
+//         <a href="#" class="lien-photo-app2"><?php the_post_thumbnail( 'meduim',['class' => 'photo-app2'] ); ?></a>
+//     </div>
+// </div>
+
+
+<section class="photo-contact-navigation">
+    <div class="photo-navigation">
+        <?php 
+        // Récupérer les photos précédente et suivante
+        $prev_post = get_previous_post();
+        $next_post = get_next_post();
+        ?>
+        
+        <!-- Miniature de la photo précédente -->
+        <div class="photo-miniature" id="miniature-precedente">
+            <?php if ($prev_post): ?>
+                <?php echo get_the_post_thumbnail($prev_post->ID, 'thumbnail', ['class' => 'img-miniature']); ?>
+            <?php endif; ?>
+        </div>
+
+        <!-- Flèche gauche -->
+        <div class="photo-fleche">
+            <a class="photo-fleche_gauche" 
+               href="<?php echo $prev_post ? get_permalink($prev_post->ID) : '#'; ?>"
+               data-thumbnail="<?php echo $prev_post ? get_the_post_thumbnail_url($prev_post->ID, 'thumbnail') : ''; ?>">
+                <img src="<?php echo get_template_directory_uri() . '/assets/fleche-gauche.png'; ?>" alt="fleche gauche">
+            </a>
+        </div>
+
+        <!-- Miniature de la photo suivante -->
+        <div class="photo-miniature" id="miniature-suivante">
+            <?php if ($next_post): ?>
+                <?php echo get_the_post_thumbnail($next_post->ID, 'thumbnail', ['class' => 'img-miniature']); ?>
+            <?php endif; ?>
+        </div>
+
+        <!-- Flèche droite -->
+        <div class="photo-fleche">
+            <a class="photo-fleche_droite" 
+               href="<?php echo $next_post ? get_permalink($next_post->ID) : '#'; ?>"
+               data-thumbnail="<?php echo $next_post ? get_the_post_thumbnail_url($next_post->ID, 'thumbnail') : ''; ?>">
+                <img src="<?php echo get_template_directory_uri() . '/assets/fleche-droite.png'; ?>" alt="fleche droite">
+            </a>
+        </div>
+    </div>
+</section>
+********************************************************************************************
+
+<?php
+// Requête pour récupérer toutes les photos
+$args = [
+    'post_type' => 'photo',
+    'posts_per_page' => -1,
+    'orderby' => 'date',
+    'order' => 'ASC',
+];
+$photos_query = new WP_Query($args);
+
+if ($photos_query->have_posts()) {
+    $photos = $photos_query->posts; // Toutes les photos
+    $current_id = get_the_ID(); // ID de la photo actuelle
+
+    // Trouver la position actuelle
+    $current_index = array_search($current_id, array_column($photos, 'ID'));
+
+    // Déterminer les photos suivante et précédente
+    $prev_index = ($current_index - 1 + count($photos)) % count($photos);
+    $next_index = ($current_index + 1) % count($photos);
+
+    $prev_photo = $photos[$prev_index];
+    $next_photo = $photos[$next_index];
+}
+?>
+**********************************************
+flecheGauche.addEventListener('mouseover', () => {
+        const thumbnailUrl = flecheGauche.getAttribute('data-thumbnail');
+         if (thumbnailUrl) {
+           miniaturePrecedente.style.backgroundImage = `url(${thumbnailUrl})`;
+            miniaturePrecedente.style.display = 'block';
+        }
+    });

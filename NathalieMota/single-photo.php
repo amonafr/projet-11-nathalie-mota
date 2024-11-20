@@ -48,33 +48,36 @@
                 <input type="button" id="contact-button" data-reference="<?php echo esc_attr( $reference ); ?>" value="Contact">
             </div>
             <div class="photo-navigation">
-                <div class="photo-suivante">
-                     <a href="#" class="lien-photo-suivante"><?php the_post_thumbnail( 'thumbnail',['class' => 'img-photo-suivante'] ); ?></a>
+                <?php 
+                    $prev_post = get_previous_post();
+                    $next_post = get_next_post();
+                ?>
+                <div class="photo-suivante" id="miniature-suivante">
+                <!-- debut chgt -->
+                    <?php if ($next_post): ?>
+                        <?php echo get_the_post_thumbnail($next_post->ID, 'thumbnail', ['class' => 'img-photo-suivante']); ?>
+                    <?php endif; ?>
                 </div>
-                <div class="photo-fleche">
-                     <a class="photo-fleche_gauche" href="#"><img  src="<?php echo get_template_directory_uri() . '/assets/fleche-gauche.png'?>" alt="fleche gauche"></a>
-		             <a class="photo-fleche_droite" href="#"><img  src="<?php echo get_template_directory_uri() . '/assets/fleche-droite.png'?>" alt="fleche droite"></a>
+                <div class="photo-precedente" id="miniature-precedente">
+                    <?php if ($prev_post): ?>
+                        <?php echo get_the_post_thumbnail($prev_post->ID, 'thumbnail', ['class' => 'img-photo-suivante']); ?>
+                    <?php endif; ?>
+                </div> 
+                <!-- fin changement -->
+                <div class="photo-fleche" >
+                    <?php if ($prev_post): ?>
+                     <a class="photo-fleche_gauche" href="<?php echo get_permalink($prev_post->ID); ?>"><img  src="<?php echo get_template_directory_uri() . '/assets/fleche-gauche.png'?>" alt="fleche gauche"></a>
+		            <?php endif; ?>
+                    <?php if ($next_post): ?>
+                     <a class="photo-fleche_droite" href="<?php echo get_permalink($next_post->ID); ?>"><img  src="<?php echo get_template_directory_uri() . '/assets/fleche-droite.png'?>" alt="fleche droite"></a>
+                    <?php endif; ?>
                 </div>
             </div>
             
     </section>
     <section id="photos-apparentees" class="photos-apparentees">
         <div class="grande-separation"></div>
-        <p class="texte-photos-apparentess">Vous aimerez AUSSI</p>
-        <div class="photos-apparentees-detail">
-            <div class="photo-app-conteneur1">
-                <!-- <p>conteneur1</p> -->
-
-
-            <a href="#" class="lien-photo-app1"><?php the_post_thumbnail( 'meduim',['class' => 'photo-app1'] ); ?></a>
-            </div>
-            <div class="photo-app-conteneur2">
-            <a href="#" class="lien-photo-app2"><?php the_post_thumbnail( 'meduim',['class' => 'photo-app2'] ); ?></a>
-            <!-- <p>conteneur2</p>
-            <p>conteneur2 deuxieme ligne</p> -->
-       
-        </div>
-        </div>
+        <?php get_template_part('template-parts/photos-apparentees');?>
     </section>
     <?php
         endwhile;

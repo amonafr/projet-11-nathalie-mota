@@ -1,0 +1,72 @@
+(function ($) {
+    $(document).ready(function () {
+  
+
+      $('#contact-button').click(function (e) {
+            e.preventDefault();
+            let reference = $(this).data('reference');
+            console.log(reference);
+            console.log("le bouton est cliqué");
+            $('body').addClass('overflow-hidden')
+            $("#ref-photo").val(reference);
+            $('#contact-modal').show();
+            $('#contact-principal').show();
+            
+
+
+// ********************code ajax_
+            // $.ajax({
+            //         url: ajax_object.ajax_url,
+            //         method: 'POST',
+            //         data: {
+            //         action: 'charger_contact_popup',
+            //         reference: reference
+            //                 },
+            //     success: function(response) {
+            //         $('body').prepend(response);
+            //         $("#ref-photo").val(reference);
+            //         $('#contact-modal').show();
+            //         $('#contact-principal').show();
+
+////***************** */
+                    // $(window).on('click', function(event) {
+                    //     if ((event.target === $('#contact-principal').get(0))
+                    //         && (event.target != $($('#contact-modal')).get(0))) 
+                    //     {
+                    //         $('#contact-modal').fadeOut();
+                    //         $('#contact-principal').fadeOut();
+                    //         $('body').removeClass('overflow-hidden')
+
+                    //     }
+                    // });
+
+
+
+////************* */
+
+    // }
+
+
+// });
+
+// ***************code ajax
+
+            
+        });
+        
+    
+
+    $(window).on('click', function(event) {
+        if ((event.target === $('#contact-principal').get(0))
+            && (event.target != $($('#contact-modal')).get(0))) 
+        {
+            $('#contact-modal').close();
+            $('#contact-principal').close();
+            $('body').removeClass('overflow-hidden')
+
+        }
+    });
+
+});
+
+})(jQuery);
