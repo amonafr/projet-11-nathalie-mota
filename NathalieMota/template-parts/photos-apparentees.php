@@ -1,4 +1,4 @@
-<p class="texte-photos-apparentess">Vous aimerez AUSSI</p>
+
 <?php
 $categories = get_the_terms(get_the_ID(), 'categorie');
 if ($categories && !is_wp_error($categories)) {
@@ -6,8 +6,6 @@ if ($categories && !is_wp_error($categories)) {
 }
 
 
-// $categorie= foreach ( $categories as $category ) {
-//     echo esc_html( $category->name ) . ' ';  }  
 
 
 $args = array(
@@ -34,8 +32,10 @@ if ($photos_apparentees->have_posts()) :
             if (has_post_thumbnail()) {
                 the_post_thumbnail('meduim',['class' => 'photo-app']);
              }
-            echo '<div class="legende-photo" style="background-image: url(' . get_template_directory_uri() . '/assets/icon-oeil.png)">';
+            // echo '<div class="legende-photo" style="background-image: url(' . get_template_directory_uri() . '/assets/icon-oeil.png)">';
+            echo '<div class="legende-photo">';
                 echo '<a href="#"><img class="fullscreen" src="' . get_template_directory_uri() . '/assets/Icon_fullscreen.png" alt="icone fullscreen" class="icon-fullscreen"></a>';
+                echo '<a href="'. get_permalink(get_the_ID()) .'"><img class="oeil-icon" src="' . get_template_directory_uri() . '/assets/icon-oeil.png" alt="icone oeil" class="lien-oeil-icon"></a>';
                 echo '<div class="legende-photo-texte">';   
                     echo '<p>' . $reference_photo_app . '</p>';
                     echo '<p>' . $category_slug .'</p>';
@@ -48,11 +48,6 @@ if ($photos_apparentees->have_posts()) :
 else :
     echo 'Aucune photo similaire trouvée.';
 endif;
-
-
-
-
-
 
 
 ?>

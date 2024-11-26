@@ -8,13 +8,13 @@
     </head>
 <body>
     
-<nav class="barre-navigation">
+<header class="barre-navigation">
     <div class="logo-container">
      <a href="#" >
         <img src="<?php echo get_template_directory_uri() . '/assets/Logo.png'; ?>" alt="Logo" class="logo-img">
       </a>
     </div>
-    <div class="photo-menu-principal">
+    <nav class="photo-menu-principal">
     <button class="menuBurger">
                 <span class="line"></span>
                 <span class="line"></span>
@@ -22,9 +22,9 @@
     </button>
     <?php  wp_nav_menu(['theme_location' => 'main-menu',
     ]);?>
-    </div>
+    </nav>
 
-</nav>
+</header>
 
 
 

@@ -77,6 +77,7 @@
     </section>
     <section id="photos-apparentees" class="photos-apparentees">
         <div class="grande-separation"></div>
+        <p class="texte-photos-apparentess">Vous aimerez AUSSI</p>
         <?php get_template_part('template-parts/photos-apparentees');?>
     </section>
     <?php
