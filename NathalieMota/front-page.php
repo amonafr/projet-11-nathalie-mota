@@ -101,6 +101,9 @@ if ( isset( $_POST['categorie'] ) || isset( $_POST['format'] ) || isset( $_POST[
     echo 'Format choisi : ' . esc_html( $format ) . '<br>';
     echo 'Clé de tri : ' . esc_html( $cletri ) . '<br>';
     // var_dump($_POST);
+} else
+{
+    $cletri='DESC';
 }
 
 ?>
@@ -174,7 +177,7 @@ if ($photos_apparentees->have_posts()) :
         $derniere_photo=get_the_ID();
     endwhile;
     echo '</div>';
-    wp_reset_postdata(); // Réinitialise les données du post
+    wp_reset_postdata(); // Réinitialise les données du postinput
 else :
     echo 'Aucune photo similaire trouvée.';
 endif;

@@ -9,17 +9,20 @@
 <body>
     
 <header class="barre-navigation">
+    <div class="haut-menu">
     <div class="logo-container">
-     <a href="#" >
+     <a href="<?php echo home_url(); ?>" >
         <img src="<?php echo get_template_directory_uri() . '/assets/Logo.png'; ?>" alt="Logo" class="logo-img">
       </a>
     </div>
-    <nav class="photo-menu-principal">
-    <button class="menuBurger">
+    
+    <button id="menuMobile" class="menuBurger">
                 <span class="line"></span>
                 <span class="line"></span>
                 <span class="line"></span>
     </button>
+    </div>
+    <nav class="photo-menu-principal">
     <?php  wp_nav_menu(['theme_location' => 'main-menu',
     ]);?>
     </nav>

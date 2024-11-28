@@ -13,16 +13,23 @@
             // Les données de notre formulaire
 			// ⚠️ Ne changez pas le nom "action" !
             
-            const ajaxurl = $(this).data('ajaxurl');
+            // const ajaxurl = $(this).data('ajaxurl');
 
-            const data = {
-                action: $(this).data('action'), 
-                nonce:  $(this).data('nonce'),
-                postid: $(this).data('postid'),
-                cletri: $(this).data('cletri'),
+            // const data = {
+            //     action: $(this).data('action'), 
+            //     nonce:  $(this).data('nonce'),
+            //     postid: $(this).data('postid'),
+            //     cletri: $(this).data('cletri'),
                 
-            }
+            // }
 
+            const ajaxurl = $(this).attr('data-ajaxurl');
+            const data = {
+                action: $(this).attr('data-action'),
+                nonce: $(this).attr('data-nonce'),
+                postid: $(this).attr('data-postid'), // Relecture dynamique à chaque clic
+                cletri: $(this).attr('data-cletri'),
+            };
 
 
 
@@ -53,9 +60,21 @@
                 // Et en cas de réussite
                 // $(this).hide(); // Cacher le formulaire
                 console.log("voici le retour :");
-                console.log(body.data);
-
+                console.log(body.data.html);
+                if (body.data.html){
                 $('.photo-album').append(body.data.html); // Et afficher le HTML
+                }
+                else{
+                    $('.photo-charger-plus').append(body.data.messageerreur);
+                }
+                if (body.data.lastphoto){
+                        $('#bouton-charger-plus').attr('data-postid', body.data.lastphoto);
+                        // ref_derniere_photo=body.data.lastphoto;
+                    }
+
+                console.log("Nouveau postid :", body.data.lastphoto);
+                console.log("le postid envoyé par js:", body.data.postid);
+
             });
         });
         

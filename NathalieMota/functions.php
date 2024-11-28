@@ -12,6 +12,8 @@ function NathalieMota_enqueue_styles() {
     wp_enqueue_style('NMStyle', get_template_directory_uri() . '/styles/NMstyle.css');
     wp_enqueue_script('ModalContact', get_template_directory_uri() . '/js/ModalContact.js');
     wp_enqueue_script('navigationPhoto', get_template_directory_uri() . '/js/navigationPhoto.js');
+    wp_enqueue_script('ouvrirMenuBurger', get_template_directory_uri() . '/js/ouvrirMenuBurger.js',[],'1.0',true);
+    
     wp_enqueue_script( 
         'chargerPlus', 
         get_template_directory_uri() . '/js/charger-plus.js', [ 'jquery' ], 
@@ -31,7 +33,9 @@ function NathalieMota_enqueue_styles() {
     // wp_localize_script('charge-modal', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 // }
 }
+
 add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
+
 
 function NathalieMota_add_space_mono_font() {
     // echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
@@ -39,9 +43,6 @@ function NathalieMota_add_space_mono_font() {
     wp_enqueue_style('space-mono-font', 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap', [], null);
 }
 add_action('wp_head', 'NathalieMota_add_space_mono_font');
-
-
-
 
 
 // function charger_contact_popup() {
@@ -85,25 +86,43 @@ function photo_charger_plus() {
 
   	// Utilisez sanitize_text_field() pour les chaines de caractères.
     $cletri = sanitize_text_field( $_POST['cletri'] );
-
+    // if (empty($cletri))
+    // {
+        $cletri='DESC';
+    // }
 
 // la requete wpquery
-
-// Récupérer la date de l'article avec cet ID
+// post_id contient la dernière page chargée
 $date_de_reference = get_post_field('post_date', $post_id);
+// $New_photo_de_reference=get_the_ID();
+
+
+
+
+
 $args = [
-    'post_type' => 'photo', // Type de contenu (articles)
-    'posts_per_page' => 8, // Nombre d'articles à afficher
-    'orderby' => 'date', // Trier par date
-    'order' => $cletri, // Ordre décroissant (du plus récent au plus ancien)
+    'post_type' => 'photo', 
+    'posts_per_page' => 8, 
+    'orderby' => 'date', 
+    'order' => $cletri, 
     'date_query' => [
         [
-            'before' => $date_de_reference, // Articles publiés après cette date
-            'inclusive' => false, // Exclure la date exacte de l'article avec cet ID
+            'before' => $date_de_reference, 
+            'inclusive' => false, 
         ],
     ],
 ];
+
+// nouvelle requette tenant compte des select
+
+
+
+
+
+// fin nouvelle requette tenant compte des select
+
 $html='';
+$ref_derniere_photo=0;
 $photos_chargees = new WP_Query($args);
 
 if ($photos_chargees->have_posts()) :
@@ -130,19 +149,39 @@ if ($photos_chargees->have_posts()) :
         $html .= '<p>' . esc_html( $reference_photo_album ) . '</p>';
         $html .= '<p>' . esc_html( $categorie_photo_album ) . '</p>';
         $html .= '</div></div></div>';
+        $ref_derniere_photo=get_the_ID();  // ref_derniere_photo contient l ID de la dernière page chargee
     endwhile;
     $html.='</div>';
+    
+        
     wp_reset_postdata(); // Réinitialise les données du post
 else :
     $html .= '<p>Aucune photo similaire trouvée.</p>';
 endif;
-
+// var_dump("derniere photo reference");
+// var_dump($ref_derniere_photo);
 // la requete wpquery
- 	
   	// Envoyer les données au navigateur
-      wp_send_json_success([
-        'html' => $html,
-    ]);
+      if (!empty($html) && !empty($ref_derniere_photo)) {
+        wp_send_json_success([
+            'html' => $html,
+            'lastphoto' => $ref_derniere_photo,
+            'postid' => $post_id,
+        ]);
+    } else {
+        $html='<p class="message-erreur"> Plus de photo à charger</p>';
+        wp_send_json_success([
+                'messageerreur' => $html,
+            ]);
+
+
+        // wp_send_json_error('Données manquantes');
+    }
+    //envoyer données
+    //   wp_send_json_success([
+    //     'html' => $html,
+        // 'lastphoto'=>$ref_derniere_photo,
+    // ]);
     wp_die();
 }
 

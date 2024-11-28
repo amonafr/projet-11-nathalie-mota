@@ -1,3 +1,6 @@
+
+/*******genéral *****************/
+
 html, body {
     overflow-x: hidden;
   }
@@ -5,7 +8,27 @@ html, body {
   * {
     box-sizing: border-box;
   }
-/*fontes*****************************/
+  html {
+    font-size: 100%; 
+  }
+  
+  
+input[type="button"] {
+    cursor: pointer;
+    width: 17rem;
+    height: 3.125rem;
+    background: #D8D8D8;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0px 2px 1px 0px #00000005;
+}
+input[type="button"]:hover
+{
+    background-color: black;
+    color: white;
+}
+  
+/*****fontes**à supprimer plutard**************************/
 
 .space-mono-regular {
     font-family: "Space Mono", monospace;
@@ -60,6 +83,7 @@ header.barre-navigation {
 
 
 ul#menu-menu-principal {
+    display:block;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -90,6 +114,18 @@ ul#menu-footer {
     width: 100%;
     margin-top:5px;
 }
+
+.rotate-down {
+transform: rotate(45deg) translate(3.5px, 3.5px);
+
+}
+.rotate-up {
+transform: rotate(-45deg) translate(3.5px, -3.5px);
+}
+.hide {
+opacity: 0;
+}
+
 
 /****************Modal contact**************/
 
@@ -145,7 +181,7 @@ dialog form{
     height: 230px;
     width: 100%;
 }
-/* marge haute du formulaire*/
+/* marge haute du formulaire de la modale de contact*/
 div#wpcf7-f58-o1 {
     margin-top: 80px;
 }
@@ -293,9 +329,9 @@ section.photo-contact-navigation {
     font-size: 14px;
 }
 
-input[type="button"] {
-    width: 272px;
-    height: 50px;
+.photo-contact-navigation input[type="button"] {
+    width: 17rem;
+    height: 3.125rem;
     background: #D8D8D8;
     border: none;
     border-radius: 2px;
@@ -308,15 +344,18 @@ input[type="button"] {
     width: 100%;
 }
 
-.petite-separation {
+/* .petite-separation {
     border-top: 1px solid #000; 
     width: 564px;
+} */
+.petite-separation {
+    border-top: 1px solid #000;
+    width: 92%;
 }
-
 
 .photo-globale h2{
     font-family: Space Mono;
-    font-size: 66px;
+    font-size: 4.125rem;
     font-style: italic;
     font-weight: 400;
     line-height: 58px;
@@ -489,9 +528,12 @@ display:none;
      transform: translate(-50%, -50%);
 }
 /************************Front page******************************/
+
+/*****section photo-hero-header*******/
 .photo-hero-header
 {
-    height: 962px;
+    height: 100vh;
+    /* height: 962px; */
     width: 100%;
 }
 
@@ -503,7 +545,7 @@ section.photo-hero-header.lazyloaded {
 
 .titre-site{
     font-family: Space Mono;
-    font-size: 96px;
+    font-size: 6rem;
     font-style: italic;
     font-weight: 700;
     line-height: 142.18px;
@@ -513,9 +555,12 @@ section.photo-hero-header.lazyloaded {
     color:white;
     text-transform: uppercase;
     margin: 0;
-    padding-top: 402px;
+    padding-top: 50vh;
     /* border: 3px solid #FFFFFF */
 }
+
+
+/*****section album photo*******/
 
 .photo-album {
     /* width:39%; */
@@ -558,36 +603,62 @@ section.photo-hero-header.lazyloaded {
     justify-content: space-between;
     width: 100%;
 }
-.photo-charger-plus {
+/* .photo-charger-plus {
     margin-top: 40px;
     margin-bottom: 40px;
     display: flex;
     justify-content: center;
+} */
+.photo-charger-plus {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
+
+
+
+
 input#bouton-charger-plus {
-    width: 272px;
+    /* width: 272px; */
     border-radius: 2px;
     background-color: #D8D8D8;
     box-shadow: 0px 2px 1px 0px #00000005;
 
 }
-input[type="button"] {
-    cursor: pointer;
-}
-input[type="button"]:hover
-{
-    background-color: black;
-    color: white;
-}
+
+
 #bouton-charger-plus:hover{
     background-color: black;
     color: white;
 }
 
+
 /************************fin Front page******************************/
-
-
+.menu-ouvert
+    {
+        display:block;
+        display: flex;
+        flex-direction: column;
+        background-color:#E00000;
+        width: 100%;
+        height: 100vh;
+        
+    }
+@media (max-width: 480px) {
+        html {
+          font-size: 85%; /* 13.6px */
+        }
+      }
 @media (max-width: 767px) {
+
+    
+        html {
+          font-size: 90%; /* 14.4px */
+        }
+      
     section{
         padding-left: 0px;
         padding-right: 0px;
@@ -604,26 +675,106 @@ input[type="button"]:hover
     }
     .photo-image
     {
-        width: 265px;
-        height: 379px;
+        width: 80%;
+        /* width: 265px; */
+        /* height: 379px; */
+        height: 67%;
         margin: 1px auto;
     }
     .photo-info
     {
         width: 100%; 
     }
+    .haut-menu {
+        display: flex;
+        flex-direction: row;
+        width: 85%;
+        justify-content: space-between;
+    }
+    
+
+
 
     ul#menu-menu-principal
     {
         display:none;
+        width:100%;
+        padding-top: 37%;
+        padding-left: 0;
+        padding-right: 0;
 
     }
+    
+    ul#menu-menu-principal li{
+
+        text-align: center;
+        /* margin-bottom:18px; */
+        /* font-size: 44px; */
+        font-weight: 400;
+        /* line-height: 65.16px;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none; */
+        width:100%
+    
+    }
+
+    
+    
+    ul#menu-menu-principal li a {
+        font-size: 2.5rem;
+        color: white;
+        font-weight: 400;
+        /* line-height: 65.16px;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none; */
+
+    }
+    li#menu-item-65, li#menu-item-61{
+        padding-bottom: 1.2rem;
+    }
+
+    
+    header.barre-navigation
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 5.15rem;
+        width: 100%;
+
+    }
+    
+
+    nav.photo-menu-principal {
+        width: 100%;
+        z-index: 99;
+        position: absolute;
+        top: 92px;
+        /* margin-top: 80px; */
+    }
+
     .menuBurger
     {
-    display:block;
-    border:none;
-    background-color: white;
-    }
+        display:block;
+        border:none;
+        background-color: white;
+
+        }
+
+    /* section.photo-globale {
+            width: 80%;
+            margin: auto;
+        } */
+
+    .photo-details
+        {
+            margin-left:15%;
+        }
+    .photo-info h2
+        {
+            margin-left:15%;
+            font-size: 46px;
+        }
     .petite-separation
     {
         width: 100%;
@@ -637,13 +788,22 @@ input[type="button"]:hover
         width: 317px;
         margin: 52px auto;
     }
-    conteneur1, .photo-app-conteneur {
+   /* .conteneur1, .photo-app-conteneur {
         width: 317px;
         height: 278px;
         overflow: hidden;
         position: relative;
 
+    } */
+    .conteneur1, .photo-app-conteneur {
+        width: 90%;
+        height: 49vh;
+        overflow: hidden;
+        position: relative;
+        margin: auto;
     }
+
+
     .photo-bouton {
         display: flex;
         flex-direction: column;
@@ -675,15 +835,7 @@ input[type="button"]:hover
     {
         width:100%;
     }
-    .photo-details
-    {
-        margin-left:15%;
-    }
-    .photo-info h2
-    {
-        margin-left:15%;
-        font-size: 46px;
-    }
+   
     .photo-fleche
     {
         display: none;
@@ -706,10 +858,19 @@ input[type="button"]:hover
     padding-left:0;
     padding-right:0;
     }
+    /* section#photos-apparentees {
+        padding-left: 0;
+        padding-right: 0;
+        margin-top: 23px;
+        
+    } */
     section#photos-apparentees {
         padding-left: 0;
         padding-right: 0;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
     }
+
     .photo-navigation
     {
         display: none;
@@ -728,6 +889,8 @@ input[type="button"]:hover
         gap: 24px;
         align-items: center;
         gap: 24px;
+        width: 100%;
+        padding-left: 0;
     }
 
     .legende-photo {
@@ -745,5 +908,38 @@ input[type="button"]:hover
         left: 85%;
     }
 
+/***********modal de contact********************/
+dialog form {
+    /* margin-top: 70px; */
+    display: flex
+;
+    flex-direction: column;
+    gap: 3.5rem;
+    margin: auto;
+    width: 69%;
+    /* justify-content: space-between; */
+}
+.formulaire-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    height: 80%;
+    /* justify-content: space-between; */
+}
+.nom, .email, .refphoto {
+    height: 3rem;
+    /* padding-top: 0; */
+}
+.message{
+    height: 10rem;
+}
+dialog#contact-modal {
+    height: 100vh;
+}
+
+div#wpcf7-f58-o1 {
+    margin-top: 4rem;
+}
+/***********fin modal de contact********************/
 
 }
