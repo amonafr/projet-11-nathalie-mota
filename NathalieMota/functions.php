@@ -13,6 +13,9 @@ function NathalieMota_enqueue_styles() {
     wp_enqueue_script('ModalContact', get_template_directory_uri() . '/js/ModalContact.js');
     wp_enqueue_script('navigationPhoto', get_template_directory_uri() . '/js/navigationPhoto.js');
     wp_enqueue_script('ouvrirMenuBurger', get_template_directory_uri() . '/js/ouvrirMenuBurger.js',[],'1.0',true);
+    wp_enqueue_script('lightBox', get_template_directory_uri() . '/js/lightBox.js',[],'1.0',true);
+
+
     
     wp_enqueue_script( 
         'chargerPlus', 
@@ -21,8 +24,8 @@ function NathalieMota_enqueue_styles() {
       true 
    );
    wp_enqueue_script( 
-    'chargertri', 
-    get_template_directory_uri() . '/js/photos-tri.js', [ 'jquery' ], 
+    'photo-filtre', 
+    get_template_directory_uri() . '/js/photo-filtre.js', [ 'jquery' ], 
   '1.0', 
   true 
 );
@@ -86,36 +89,119 @@ function photo_charger_plus() {
 
   	// Utilisez sanitize_text_field() pour les chaines de caractères.
     $cletri = sanitize_text_field( $_POST['cletri'] );
-    // if (empty($cletri))
-    // {
+    if (empty($cletri))
+    {
         $cletri='DESC';
-    // }
+    }
+    $categorie='';
+    $format='';
+    $categorie = isset($_POST['categorie']) ? sanitize_text_field($_POST['categorie']) : '';
+    $format = isset($_POST['format']) ? sanitize_text_field($_POST['format']) : '';
+    // la requete wpquery
+    // post_id contient la dernière page chargée
+    $date_de_reference = get_post_field('post_date', $post_id);
+    // $New_photo_de_reference=get_the_ID();
 
-// la requete wpquery
-// post_id contient la dernière page chargée
-$date_de_reference = get_post_field('post_date', $post_id);
-// $New_photo_de_reference=get_the_ID();
+    $msg='';
 
+//ancienne requete qui marche
 
-
-
-
-$args = [
-    'post_type' => 'photo', 
-    'posts_per_page' => 8, 
-    'orderby' => 'date', 
-    'order' => $cletri, 
-    'date_query' => [
-        [
-            'before' => $date_de_reference, 
-            'inclusive' => false, 
-        ],
-    ],
-];
+// $args = [
+//     'post_type' => 'photo', 
+//     'posts_per_page' => 8, 
+//     'orderby' => 'date', 
+//     'order' => $cletri, 
+//     'date_query' => [
+//         [
+//             'before' => $date_de_reference, 
+//             'inclusive' => false, 
+//         ],
+//     ],
+// ];
 
 // nouvelle requette tenant compte des select
 
+// $args = [
+//     'post_type' => 'photo',
+//     'posts_per_page' => 8,
+//     'tax_query' => [],
+//     'orderby' => 'date',
+//     'order' => $cletri,
+//     'date_query' => [
+//         [
+//             'before' => $date_de_reference, 
+//             'inclusive' => false, 
+//         ],
+//     ],
+    
+// ];
+if ($cletri==='DESC'){
+    $args = [
+            'post_type' => 'photo',
+            'posts_per_page' => 8,
+            'tax_query' => [],
+            'orderby' => 'date',
+            'order' => $cletri,
+            'date_query' => [
+                [
+                    'before' => $date_de_reference, 
+                    'inclusive' => false, 
+                ],
+            ],
+            
+        ];
+} elseif ($cletri==='ASC')
+{
+    $args = [
+        'post_type' => 'photo',
+        'posts_per_page' => 8,
+        'tax_query' => [],
+        'orderby' => 'date',
+        'order' => $cletri,
+        'date_query' => [
+            [
+                'after' => $date_de_reference, 
+                'inclusive' => false, 
+            ],
+        ],
+        
+    ];
 
+}
+
+
+// $args = [
+//     'post_type' => 'photo',
+//     'posts_per_page' => 8,
+//     'tax_query' => [],
+//     'orderby' => 'date',
+//     'order' => $cletri, // Garder la valeur de tri ici
+//     'date_query' => [
+//         [
+//             $cletri === 'DESC' ? 'before' : 'after' => $date_de_reference,
+//             'inclusive' => false, 
+//         ],
+//     ],
+// ];
+
+
+if (isset($categorie) && !empty($categorie) && ($categorie !=''))
+ {
+    $args['tax_query'][] = [
+        'taxonomy' => 'categorie',
+        'field' => 'slug',
+        'terms' => $categorie,
+    ];
+    
+}
+
+if (isset($categorie) && !empty($format) && ($format !='')) {
+    $args['tax_query'][] = [
+        'taxonomy' => 'format',
+        'field' => 'slug',
+        'terms' => $format,
+    ];
+}
 
 
 
@@ -158,9 +244,7 @@ if ($photos_chargees->have_posts()) :
 else :
     $html .= '<p>Aucune photo similaire trouvée.</p>';
 endif;
-// var_dump("derniere photo reference");
-// var_dump($ref_derniere_photo);
-// la requete wpquery
+// fin la requete wpquery
   	// Envoyer les données au navigateur
       if (!empty($html) && !empty($ref_derniere_photo)) {
         wp_send_json_success([
@@ -169,7 +253,7 @@ endif;
             'postid' => $post_id,
         ]);
     } else {
-        $html='<p class="message-erreur"> Plus de photo à charger</p>';
+        $html='<p class="message-erreur"> Plus de photo à charger'. $msg .'</p>';
         wp_send_json_success([
                 'messageerreur' => $html,
             ]);
@@ -199,9 +283,6 @@ function photos_tri() {
     	wp_send_json_error( "L'identifiant de la page est manquant.", 400 );
   	}
 
-
-
-
     // Récupération des paramètres
     $page_id = isset($_POST['page_id']) ? intval($_POST['page_id']) : 0;
     $categorie = isset($_POST['categorie']) ? sanitize_text_field($_POST['categorie']) : '';
@@ -211,8 +292,6 @@ function photos_tri() {
     {
         $cletri='DESC';
     }
-    // Logique pour récupérer les données selon ces critères
-    // Par exemple :
     $args = [
         'post_type' => 'photo',
         'posts_per_page' => 8,
@@ -263,42 +342,165 @@ function photos_tri() {
             $html .= '<p>' . esc_html( $reference_photo_album ) . '</p>';
             $html .= '<p>' . esc_html( $categorie_photo_album ) . '</p>';
             $html .= '</div></div></div>';
+            $ref_derniere_photo=get_the_ID();
         endwhile;
         $html.='</div>';
-        wp_reset_postdata(); // Réinitialise les données du post
+        wp_reset_postdata(); 
     else :
         $html .= '<p>Aucune photo similaire trouvée.</p>';
     endif;
     
-    // la requete wpquery
          
-          // Envoyer les données au navigateur
-          wp_send_json_success([
+        wp_send_json_success([
             'html' => $html,
+            'lastphoto' => $ref_derniere_photo,
         ]);
 
 
 
-// ***************************************************
-    // Récupération des posts
-    // $query = new WP_Query($args);
-
-    // if ($query->have_posts()) {
-    //     ob_start();
-
-    //     while ($query->have_posts()) {
-    //         $query->the_post();
-            // Affichez le contenu des photos comme vous le souhaitez
-    //         echo '<div>' . get_the_title() . '</div>';
-    //     }
-
-    //     $data = ob_get_clean();
-    //     wp_send_json_success($data);
-    // } else {
-    //     wp_send_json_error('Aucune photo trouvée.');
-    // }
-// ***************************************************
     wp_die();
 }
 add_action('wp_ajax_photos-tri', 'photos_tri');
 add_action('wp_ajax_nopriv_photos-tri', 'photos_tri');
+
+
+
+
+// fonction lightbox
+function photos_lightbox() 
+{
+
+    
+    // Vérification de la sécurité
+    if (!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], 'photos_lightbox')) {
+        wp_send_json_error("Vous n’avez pas l’autorisation d’effectuer cette action.", 403);
+    }
+
+    if (!isset($_POST['photo_id'])) {
+        wp_send_json_error("L'identifiant de la photo est manquant.", 400);
+    }
+
+    $photo_id = intval($_POST['photo_id']);
+
+    // Query pour récupérer la photo actuelle
+    $args = array(
+        'post_type' => 'photo',
+        'posts_per_page' => 1,
+        'p' => $photo_id
+    );
+
+    $photos_chargees = new WP_Query($args);
+
+    $photo_precedente_url = '';
+    $photo_suivante_url = '';
+    $photo_precedente_id = 0;
+    $photo_suivante_id = 0;
+
+    if ($photos_chargees->have_posts()) {
+        while ($photos_chargees->have_posts()) : $photos_chargees->the_post();
+
+            $prev_post = get_previous_post();
+            $next_post = get_next_post();
+
+            if ($prev_post) {
+                $photo_precedente_id = $prev_post->ID;
+                $photo_precedente_url = get_the_post_thumbnail_url($prev_post->ID, 'large');
+                $photo_precedente_ref = get_post_meta( $prev_post->ID, 'reference', true );
+                $categories = get_the_terms($prev_post->ID, 'categorie');
+                if ($categories && !is_wp_error($categories)) {
+                        $photo_precedente_cat = $categories[0]->slug;
+                        };
+                  }
+            if ($next_post) {
+                $photo_suivante_id = $next_post->ID;
+                $photo_suivante_url = get_the_post_thumbnail_url($next_post->ID, 'large');
+                $photo_suivante_ref = get_post_meta( $next_post->ID, 'reference', true );
+                $categories = get_the_terms($next_post->ID, 'categorie');
+                if ($categories && !is_wp_error($categories)) {
+                        $photo_suivante_cat = $categories[0]->slug;
+                        };
+            }
+
+        endwhile;
+        wp_reset_postdata();
+    }
+
+    wp_send_json_success([
+        'photo_precedente' => [
+            'id' => $photo_precedente_id,
+            'url' => $photo_precedente_url,
+            'reference'=>$photo_precedente_ref,
+            'categorie'=>$photo_precedente_cat,
+        ],
+        'photo_suivante' => [
+            'id' => $photo_suivante_id,
+            'url' => $photo_suivante_url,
+            'reference'=> $photo_suivante_ref,
+            'categorie'=>$photo_suivante_cat,
+
+        ],
+    ]);
+}
+
+// add_action('wp_ajax_photos_lightbox', 'photos_lightbox');
+// add_action('wp_ajax_nopriv_photos_lightbox', 'photos_lightbox');
+
+add_action('wp_ajax_photos_lightbox', 'photos_lightbox');
+add_action('wp_ajax_nopriv_photos_lightbox', 'photos_lightbox');
+
+
+function photos_lightboxold() 
+{
+    if( 
+		! isset( $_REQUEST['nonce'] ) or 
+       	! wp_verify_nonce( $_REQUEST['nonce'], 'photos-tri' ) 
+    ) {
+    	wp_send_json_error( "Vous n’avez pas l’autorisation d’effectuer cette action.", 403 );
+  	}
+      if( ! isset( $_POST['photo_id'] ) ) {
+    	wp_send_json_error( "L'identifiant de la page est manquant.", 400 );
+  	}
+      $page_id = isset($_POST['photo_id']) ? intval($_POST['photo_id']) : 0;
+
+
+// Query pour récupérer les photos du CPT "photo"
+$args = array(
+    'post_type'      => 'photo',
+    'posts_per_page' => 1,
+    'p'              => $photo_id 
+);
+$photos_chargees = new WP_Query($args);
+
+// ***********************************
+            
+if ($photos_chargees->have_posts()) :
+    // echo '<div class="photo-album"> ';
+    while ($photos_chargees->have_posts()) : $photos_chargees->the_post();
+ 
+        $prev_post = get_previous_post();
+        $next_post = get_next_post();
+        if( $prev_post){
+            $photo_precedente_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+
+        }
+        if( $next_post){
+            $photo_suivante_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        }
+    endwhile;
+    wp_reset_postdata(); 
+else :
+    $html .= '<p>Aucune photo similaire trouvée.</p>';
+endif;
+
+     
+wp_send_json_success([
+        'html' => $html,
+        'photo_precedente' => $photo_precedente_url,
+        'photo_suivante' => $photo_suivante_url,
+    ]);
+
+wp_die();      
+}
+
+// add_action('wp_ajax_photos_lightbox', 'photos_lightbox');
+// add_action('wp_ajax_nopriv_photos_lightbox', 'photos_lightbox');

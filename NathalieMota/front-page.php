@@ -33,21 +33,18 @@ wp_reset_postdata(); ?>
     <div class="photo-criteres-recherche">
         <form action="<?php echo admin_url( 'admin-ajax.php' ); ?>"  method="POST" class="photos-form-tri">
         <input type="hidden" name="page_id" value="<?php echo get_the_ID(); ?>">
-<!-- transmission ajax -->
         <input 
             type="hidden" 
             name="nonce" 
             value="<?php echo wp_create_nonce( 'photos-tri' ); ?>"
         > 
-        <!-- ou : wp_nonce_field( 'capitaine_load_comments' ); -->
         <input
             type="hidden"
             name="action"   
             value="photos-tri"
         >
 
-<!-- fin transmission ajax -->
-           <div class="criteresP1">
+        <div class="criteresP1">
             <select id="categorie" name="categorie">
                 <option value="">Catégories</option>
                 <?php
@@ -82,31 +79,26 @@ wp_reset_postdata(); ?>
                 <option value="ASC">Anciens->Récents</option>
             </select>
         </div>
-<input type="submit" value="soumettre">
         </form>
-
     </div>
-
+    
 <!-- a supprimer -->
 
-<?php
+<!-- <?php
+$categorie='';
+$format='';
 if ( isset( $_POST['categorie'] ) || isset( $_POST['format'] ) || isset( $_POST['cletri'] ) ) {
-    // Récupérer les valeurs sélectionnées
     $categorie = isset( $_POST['categorie'] ) ? sanitize_text_field( $_POST['categorie'] ) : '';
     $format = isset( $_POST['format'] ) ? sanitize_text_field( $_POST['format'] ) : '';
     $cletri = isset( $_POST['cletri'] ) ? sanitize_text_field( $_POST['cletri'] ) : '';
 
-    // Affiche les résultats pour débogage
-    echo 'Catégorie choisie : ' . esc_html( $categorie ) . '<br>';
-    echo 'Format choisi : ' . esc_html( $format ) . '<br>';
-    echo 'Clé de tri : ' . esc_html( $cletri ) . '<br>';
-    // var_dump($_POST);
 } else
 {
-    $cletri='DESC';
+$cletri='DESC';
+    
 }
 
-?>
+?> -->
 
 <!-- <script>
     document.addEventListener('keydown', function(event) {
@@ -123,27 +115,13 @@ if ( isset( $_POST['categorie'] ) || isset( $_POST['format'] ) || isset( $_POST[
 
 <!-- partie réutilisée -->
 <?php
-// $categories = get_the_terms(get_the_ID(), 'categorie');
-// if ($categories && !is_wp_error($categories)) {
-//     $category_slug = $categories[0]->slug;
-// }
-
+$cletri='DESC';
 
 $args = array(
     'post_type' => 'photo',
     'posts_per_page' => 8,
-    // 'post__not_in' => array(get_the_ID()), 
-    // 'tax_query' => array(
-    //     array(
-    //         'taxonomy' => 'categorie',
-    //         'field'    => 'slug',
-    //         'terms'    => 'mariage',
-    //     ),
-    // ),
-    // 'orderby' => 'rand', 
     'orderby' => 'date', 
-    'order' => 'DESC'
-
+    'order' => $cletri
 );
 
 $photos_apparentees = new WP_Query($args);
@@ -153,6 +131,7 @@ if ($photos_apparentees->have_posts()) :
     while ($photos_apparentees->have_posts()) : $photos_apparentees->the_post();
         echo '<div class="photo-album-image">';
             $reference_photo_album = get_post_meta( get_the_ID(), 'reference', true );
+            $photo_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
         //  a supprimer
            $categories = get_the_terms(get_the_ID(), 'categorie');
         if ($categories && !is_wp_error($categories)) {
@@ -166,7 +145,9 @@ if ($photos_apparentees->have_posts()) :
              }
             // echo '<div class="legende-photo" style="background-image: url(' . get_template_directory_uri() . '/assets/icon-oeil.png)">';
             echo '<div class="legende-photo">';
-                echo '<a href="#"><img class="fullscreen" src="' . get_template_directory_uri() . '/assets/Icon_fullscreen.png" alt="icone fullscreen" class="icon-fullscreen"></a>';
+            echo '<a href="#" data-urlphoto="'. esc_url($photo_url) .'"  data-id="' . get_the_ID() . '" data-categorie="'. $categorie_photo_album . '" id="lien-light-box" class="lightbox-link"><img class="fullscreen" src="' . get_template_directory_uri() . '/assets/Icon_fullscreen.png" alt="icone fullscreen" class="icon-fullscreen" id="icone-light-box"></a>';
+
+                // echo '<a href="#"><img class="fullscreen" src="' . get_template_directory_uri() . '/assets/Icon_fullscreen.png" alt="icone fullscreen" class="icon-fullscreen"></a>';
                 echo '<a href="'. get_permalink(get_the_ID()) .'"><img class="oeil-icon" src="' . get_template_directory_uri() . '/assets/icon-oeil.png" alt="icone oeil" class="lien-oeil-icon"></a>';
                 echo '<div class="legende-photo-texte">';   
                     echo '<p>' . $reference_photo_album . '</p>';
@@ -177,18 +158,13 @@ if ($photos_apparentees->have_posts()) :
         $derniere_photo=get_the_ID();
     endwhile;
     echo '</div>';
-    wp_reset_postdata(); // Réinitialise les données du postinput
+    wp_reset_postdata(); 
 else :
     echo 'Aucune photo similaire trouvée.';
 endif;
 
 ?>
 
-
-
-
-
-<!-- fin partie  réutilisée -->
 
 <div class="photo-charger-plus">
  
@@ -199,7 +175,9 @@ endif;
         data-cletri="<?php echo $cletri; ?>"
         data-nonce="<?php echo wp_create_nonce('photo_charger_plus'); ?>"
         data-action="photo_charger_plus"
-        data-ajaxurl="<?php echo admin_url( 'admin-ajax.php' ); ?>" 
+        data-ajaxurl="<?php echo admin_url( 'admin-ajax.php' ); ?>"  
+        data-categorie="<?php echo $categorie; ?>" 
+        data-format="<?php echo $format; ?>"
         value="Charger plus">
 </div>
 

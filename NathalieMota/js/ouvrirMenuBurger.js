@@ -14,12 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener sur le menu burger
     menuBurger.addEventListener('click', function() {
         Menuprincipal.classList.toggle('menu-ouvert');
-        if (Menuprincipal.classList.contains('menu-ouvert')) {
-            Menuprincipal.style.display = 'block';
+        // if (Menuprincipal.classList.contains('menu-ouvert')) {
+        //     Menuprincipal.style.display = 'block';
 
-        } else{
-            Menuprincipal.style.display = 'none';
-        }  
+        // } else{
+        //     Menuprincipal.style.display = 'none';
+        // }  
         console.log(Menuprincipal);
         console.log("je suis dans ouvrir menu burger");
         lines[0].classList.toggle('rotate-down');  // première ligne

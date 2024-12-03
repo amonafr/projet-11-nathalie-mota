@@ -29,9 +29,12 @@
                 nonce: $(this).attr('data-nonce'),
                 postid: $(this).attr('data-postid'), // Relecture dynamique à chaque clic
                 cletri: $(this).attr('data-cletri'),
+                categorie:$(this).attr('data-categorie'),
+                format:$(this).attr('data-format'),
+
             };
 
-
+            $('.message-erreur').remove();
 
 
             // Pour vérifier qu'on a bien récupéré les données
