@@ -104,37 +104,9 @@ function photo_charger_plus() {
 
     $msg='';
 
-//ancienne requete qui marche
 
-// $args = [
-//     'post_type' => 'photo', 
-//     'posts_per_page' => 8, 
-//     'orderby' => 'date', 
-//     'order' => $cletri, 
-//     'date_query' => [
-//         [
-//             'before' => $date_de_reference, 
-//             'inclusive' => false, 
-//         ],
-//     ],
-// ];
 
-// nouvelle requette tenant compte des select
 
-// $args = [
-//     'post_type' => 'photo',
-//     'posts_per_page' => 8,
-//     'tax_query' => [],
-//     'orderby' => 'date',
-//     'order' => $cletri,
-//     'date_query' => [
-//         [
-//             'before' => $date_de_reference, 
-//             'inclusive' => false, 
-//         ],
-//     ],
-    
-// ];
 if ($cletri==='DESC'){
     $args = [
             'post_type' => 'photo',
@@ -170,21 +142,6 @@ if ($cletri==='DESC'){
 }
 
 
-// $args = [
-//     'post_type' => 'photo',
-//     'posts_per_page' => 8,
-//     'tax_query' => [],
-//     'orderby' => 'date',
-//     'order' => $cletri, // Garder la valeur de tri ici
-//     'date_query' => [
-//         [
-//             $cletri === 'DESC' ? 'before' : 'after' => $date_de_reference,
-//             'inclusive' => false, 
-//         ],
-//     ],
-// ];
-
-
 if (isset($categorie) && !empty($categorie) && ($categorie !=''))
  {
     $args['tax_query'][] = [
@@ -216,6 +173,7 @@ if ($photos_chargees->have_posts()) :
     while ($photos_chargees->have_posts()) : $photos_chargees->the_post();
         $html.= '<div class="photo-album-image">';
             $reference_photo_album = get_post_meta( get_the_ID(), 'reference', true );
+            $photo_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
         //  a supprimer
            $categories = get_the_terms(get_the_ID(), 'categorie');
         if ($categories && !is_wp_error($categories)) {
@@ -229,7 +187,7 @@ if ($photos_chargees->have_posts()) :
         }
 
         $html .= '<div class="legende-photo">';
-        $html .= '<a href="#"><img class="fullscreen" src="' . esc_url( get_template_directory_uri() . '/assets/Icon_fullscreen.png' ) . '" alt="icone fullscreen"></a>';
+        $html .= '<a href="#" id="lien-light-box" class="lightbox-link" data-urlphoto="'. esc_url($photo_url) .'"  data-refphoto="' . $reference_photo_album . '" data-categorie="'. $categorie_photo_album . '" ><img class="fullscreen" src="' . esc_url( get_template_directory_uri() . '/assets/Icon_fullscreen.png' ) . '" alt="icone fullscreen"></a>';
         $html .= '<a href="' . esc_url( get_permalink( get_the_ID() ) ) . '"><img class="oeil-icon" src="' . esc_url( get_template_directory_uri() . '/assets/icon-oeil.png' ) . '" alt="icone oeil"></a>';
         $html .= '<div class="legende-photo-texte">';
         $html .= '<p>' . esc_html( $reference_photo_album ) . '</p>';
@@ -323,20 +281,21 @@ function photos_tri() {
         while ($photos_chargees->have_posts()) : $photos_chargees->the_post();
             $html.= '<div class="photo-album-image">';
                 $reference_photo_album = get_post_meta( get_the_ID(), 'reference', true );
-            //  a supprimer
+                $photo_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+
                $categories = get_the_terms(get_the_ID(), 'categorie');
             if ($categories && !is_wp_error($categories)) {
                     $categorie_photo_album = $categories[0]->slug;
                     };
     
-            // a supprimer
     
             if ( has_post_thumbnail() ) {
                 $html .= get_the_post_thumbnail( get_the_ID(), 'medium', [ 'class' => 'photo-album-img' ] );
             }
     
             $html .= '<div class="legende-photo">';
-            $html .= '<a href="#"><img class="fullscreen" src="' . esc_url( get_template_directory_uri() . '/assets/Icon_fullscreen.png' ) . '" alt="icone fullscreen"></a>';
+            $html .= '<a href="#"  data-urlphoto="'. esc_url($photo_url) .'"  data-refphoto="' . $reference_photo_album . '" data-categorie="'. $categorie_photo_album . '"  id="lien-light-box" class="lightbox-link"><img class="fullscreen" src="' . esc_url( get_template_directory_uri() . '/assets/Icon_fullscreen.png' ) . '" alt="icone fullscreen"></a>';
+            // $html .= '<a href="#"><img class="fullscreen" src="' . esc_url( get_template_directory_uri() . '/assets/Icon_fullscreen.png' ) . '" alt="icone fullscreen"></a>';
             $html .= '<a href="' . esc_url( get_permalink( get_the_ID() ) ) . '"><img class="oeil-icon" src="' . esc_url( get_template_directory_uri() . '/assets/icon-oeil.png' ) . '" alt="icone oeil"></a>';
             $html .= '<div class="legende-photo-texte">';
             $html .= '<p>' . esc_html( $reference_photo_album ) . '</p>';
@@ -395,6 +354,7 @@ function photos_lightbox()
     $photo_suivante_url = '';
     $photo_precedente_id = 0;
     $photo_suivante_id = 0;
+    
 
     if ($photos_chargees->have_posts()) {
         while ($photos_chargees->have_posts()) : $photos_chargees->the_post();
@@ -410,7 +370,8 @@ function photos_lightbox()
                 if ($categories && !is_wp_error($categories)) {
                         $photo_precedente_cat = $categories[0]->slug;
                         };
-                  }
+                  } 
+                  
             if ($next_post) {
                 $photo_suivante_id = $next_post->ID;
                 $photo_suivante_url = get_the_post_thumbnail_url($next_post->ID, 'large');
@@ -419,7 +380,7 @@ function photos_lightbox()
                 if ($categories && !is_wp_error($categories)) {
                         $photo_suivante_cat = $categories[0]->slug;
                         };
-            }
+            } 
 
         endwhile;
         wp_reset_postdata();

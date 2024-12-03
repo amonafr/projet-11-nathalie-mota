@@ -77,7 +77,7 @@
 
                 console.log("Nouveau postid :", body.data.lastphoto);
                 console.log("le postid envoyé par js:", body.data.postid);
-
+                document.dispatchEvent(new Event('contentUpdated'));
             });
         });
         

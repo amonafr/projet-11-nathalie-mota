@@ -44,6 +44,8 @@ console.log(data);
                 $('.photo-album').empty();
                 $('.photo-album').append(body.data.html);
                 $('#bouton-charger-plus').attr('data-postid',body.data.lastphoto )
+
+                document.dispatchEvent(new Event('contentUpdated'));
             })
             .catch(error => {
                 console.error('Erreur lors de l’envoi AJAX :', error);

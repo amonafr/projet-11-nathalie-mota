@@ -562,12 +562,13 @@ section.photo-hero-header.lazyloaded {
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     /* text-align: center; */
-    color:white;
+    /* color:white; */
+    color: transparent;
+    -webkit-text-stroke: 2px #fff;
     text-transform: uppercase;
-    /* margin: 0; */
-    /* padding-top: 50vh; */
-    /* border: 3px solid #FFFFFF */
 }
+
+
 
 /**************section album photo********************/
 
@@ -882,7 +883,6 @@ height:  3.5rem;
 .lightbox-line:nth-child(2) {
     transform: rotate(-45deg); 
 }
-
 
 
 /*************************fin light box *****************************/

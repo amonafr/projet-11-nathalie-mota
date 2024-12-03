@@ -18,14 +18,7 @@
  
 <div class="lightbox-globale">
     <div class="photo-lightbox-precedente" > 
-        <a class="photo-precedente-lien" href="" 
-         data-photoprecedente=""  
-         data-idprecedente=""
-         data-reference=""
-         data-categorie=""
-         data-nonce="<?php echo wp_create_nonce('photos_lightbox');?>"
-         data-action="photos_lightbox"
-         data-ajaxurl="<?php echo admin_url( 'admin-ajax.php' ) ;?>" >
+        <a class="photo-precedente-lien" href="#">
          <img  src="<?php echo get_template_directory_uri() . '/assets/fleche-gauche.png'?>" alt="fleche gauche"></a>
         <p>Précédente</p>
     </div>  
@@ -39,15 +32,7 @@
     </div>
         <div class="photo-lightbox-suivante" >
             <p>Suivante</p>
-            <a class="photo-suivante-lien" href=""
-            data-photosuivante=""  
-            data-idsuivante=""
-            data-reference=""
-            data-categorie=""
-            data-nonce="<?php echo wp_create_nonce('photos_lightbox');?>"
-            data-action="photos_lightbox"
-            data-ajaxurl="<?php echo admin_url( 'admin-ajax.php' ) ;?>"
-            ><img  src="<?php echo get_template_directory_uri() . '/assets/fleche-droite.png'?>" alt="fleche droite"></a>
+            <a class="photo-suivante-lien" href="#"><img  src="<?php echo get_template_directory_uri() . '/assets/fleche-droite.png'?>" alt="fleche droite"></a>
             
         </div>
 
