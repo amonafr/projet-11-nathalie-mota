@@ -1,5 +1,8 @@
+<!-- Page d'accueil du site -->
+
+
 <?php
-// Sécurité : Assurez-vous que le fichier est appelé dans le contexte de WordPress.
+// S'assurer que le fichier est appelé dans le contexte de WordPress.
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -28,94 +31,63 @@ if ( $query->have_posts() ) : ?>
 
 wp_reset_postdata(); ?>
 
+<!-- formulaire pour le filtres envoi des paramètres ajax-->
 
 <section class="photo-album-conteneur">
     <div class="photo-criteres-recherche">
         <form action="<?php echo admin_url( 'admin-ajax.php' ); ?>"  method="POST" class="photos-form-tri">
-        <input type="hidden" name="page_id" value="<?php echo get_the_ID(); ?>">
-        <input 
-            type="hidden" 
-            name="nonce" 
-            value="<?php echo wp_create_nonce( 'photos-tri' ); ?>"
-        > 
-        <input
-            type="hidden"
-            name="action"   
-            value="photos-tri"
-        >
+             <input type="hidden" name="page_id" value="<?php echo get_the_ID(); ?>">
+             <input  type="hidden" name="nonce"  value="<?php echo wp_create_nonce( 'photos-tri' ); ?>"> 
+             <input type="hidden"   name="action" value="photos-tri"  >
 
-        <div class="criteresP1">
-            <select id="categorie" name="categorie">
-                <option value="">Catégories</option>
-                <?php
-                $categories = get_terms( array(
-                        'taxonomy'   => 'categorie',
-                        'hide_empty' => true, 
+            <div class="criteresP1">
+                <select id="categorie" name="categorie">
+                     <option value="" hidden>CATEGORIES</option>
+                     <option value="" class="empty-option"></option>
+                     <?php
+                          $categories = get_terms( array(
+                           'taxonomy'   => 'categorie',
+                            'hide_empty' => true, 
                                          ) );
-                foreach ( $categories as $category ) {
-                echo '<option value="' . esc_attr( $category->slug ) . '">' . esc_html( $category->name ) . '</option>';
-                                                    }
-                ?>
+                    foreach ( $categories as $category ) {
+                    echo '<option value="' . esc_attr( $category->slug ) . '">' . esc_html( $category->name ) . '</option>';
+                        }
+                     ?>
 
-            </select>
+                </select>
 
-            <select id="format" name="format">
-                <option value="">Formats</option>
-                <?php
-                $formats = get_terms( array(
-                        'taxonomy'   => 'format',
-                        'hide_empty' => true, // N'afficher que les catégories avec des posts
+                <select id="format" name="format">
+                  <option value="" hidden>FORMATS</option>
+                  <option value="" class="empty-option"></option>
+                  <?php
+                        $formats = get_terms( array(
+                         'taxonomy'   => 'format',
+                         'hide_empty' => true, // N'afficher que les catégories avec des posts
                                          ) );
-                foreach ( $formats as $format ) {
-                echo '<option value="' . esc_attr( $format->slug ) . '">' . esc_html( $format->name ) . '</option>';
+                        foreach ( $formats as $format ) {
+                        echo '<option value="' . esc_attr( $format->slug ) . '">' . esc_html( $format->name ) . '</option>';
                                                     }
-                ?>
-            </select>
-        </div>
-        <div class="criteresP2">
-            <select id="cletri" name="cletri">Formats
-                <option value="">Trier par</option>
-                <option value="DESC">Récents->anciens</option>
-                <option value="ASC">Anciens->Récents</option>
-            </select>
-        </div>
+                        ?>
+                </select>
+            </div>
+            <div class="criteresP2">
+              <select id="cletri" name="cletri">Formats
+                <option value="" hidden>TRIER PAR</option>
+                <option value="" class="empty-option"></option>
+                <option value="DESC">A partir des plus récentes</option>
+                <option value="ASC">A partir des plus anciennes</option>
+                </select>
+            </div>
         </form>
     </div>
     
-<!-- a supprimer -->
 
-<!-- <?php
-$categorie='';
-$format='';
-if ( isset( $_POST['categorie'] ) || isset( $_POST['format'] ) || isset( $_POST['cletri'] ) ) {
-    $categorie = isset( $_POST['categorie'] ) ? sanitize_text_field( $_POST['categorie'] ) : '';
-    $format = isset( $_POST['format'] ) ? sanitize_text_field( $_POST['format'] ) : '';
-    $cletri = isset( $_POST['cletri'] ) ? sanitize_text_field( $_POST['cletri'] ) : '';
+<!-- Affichage des photos -->
 
-} else
-{
-$cletri='DESC';
-    
-}
-
-?> -->
-
-<!-- <script>
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();  
-            document.querySelector('.photo-criteres-recherche form').submit(); // Soumet le formulaire
-        }
-    });
-</script> -->
-
-<!-- a supprimer -->
-
-
-
-<!-- partie réutilisée -->
 <?php
 $cletri='DESC';
+$categorie='';
+$format='';
 
 $args = array(
     'post_type' => 'photo',

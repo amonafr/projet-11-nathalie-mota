@@ -1,12 +1,11 @@
 (function ($) {
     $(document).ready(function () {
 
-        // Fonction pour gérer l'envoi AJAX
+        // Fonction pour gérer l'envoi AJAX des filtres choisies au niveau du formulaire
         function envoyerAjax() {
-            // L'URL qui réceptionne les requêtes Ajax dans l'attribut "action" de <form>
             const ajaxurl = $('.photos-form-tri').attr('action');
 
-            // Les données de notre formulaire
+            // Les données du formulaire
             const data = {
                 action: $('.photos-form-tri').find('input[name=action]').val(),
                 nonce: $('.photos-form-tri').find('input[name=nonce]').val(),
@@ -20,10 +19,8 @@
             $('#bouton-charger-plus').attr('data-cletri', $('.photos-form-tri').find('select[name=cletri]').val());
             $('.message-erreur').remove();
 
-
-
-console.log(data);
-            // Requête AJAX via Fetch
+            // console.log(data);
+            
             fetch(ajaxurl, {
                 method: 'POST',
                 headers: {
@@ -34,13 +31,13 @@ console.log(data);
             })
             .then(response => response.json())
             .then(body => {
-                // Gérer la réponse
+                
                 if (!body.success) {
-                    alert(body.data); // Afficher un message d'erreur
+                    alert(body.data); 
                     return;
                 }
 
-                // Mettre à jour l'album photo avec le HTML renvoyé
+                // Mise à jour de la section album photo avec le HTML renvoyé
                 $('.photo-album').empty();
                 $('.photo-album').append(body.data.html);
                 $('#bouton-charger-plus').attr('data-postid',body.data.lastphoto )
@@ -52,8 +49,15 @@ console.log(data);
             });
         }
 
-        // Attacher des événements change aux selects
+        // Ecoute des evenements change au niveau des selects
         $('.photos-form-tri select').change(function () {
+// ******
+            const selectedOption = $(this).find('option:selected');
+            if (selectedOption.hasClass('empty-option')) {
+                $(this).prop('selectedIndex', 0); // Réinitialise la sélection à l'option par défaut
+            } 
+                // envoyerAjax(); // Appelle la fonction AJAX seulement si ce n'est pas une "empty-option"
+// ****
             envoyerAjax();
         });
 
