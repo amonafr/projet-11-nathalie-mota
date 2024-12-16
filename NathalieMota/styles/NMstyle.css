@@ -5,14 +5,12 @@ html, body {
     overflow-x: hidden;
   }
   
-  * {
+* {
     box-sizing: border-box;
   }
-  html {
+html {
     font-size: 100%; 
   }
-  
-  
 input[type="button"] {
     cursor: pointer;
     width: 17rem;
@@ -27,33 +25,6 @@ input[type="button"]:hover
     background-color: black;
     color: white;
 }
-  
-/*****fontes**à supprimer plutard**************************/
-
-.space-mono-regular {
-    font-family: "Space Mono", monospace;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .space-mono-bold {
-    font-family: "Space Mono", monospace;
-    font-weight: 700;
-    font-style: normal;
-  }
-  
-  .space-mono-regular-italic {
-    font-family: "Space Mono", monospace;
-    font-weight: 400;
-    font-style: italic;
-  }
-  
-  .space-mono-bold-italic {
-    font-family: "Space Mono", monospace;
-    font-weight: 700;
-    font-style: italic;
-  }
-  
 body{
     font-family: "Space Mono", monospace;
     max-width:1440px;
@@ -61,14 +32,13 @@ body{
 }
 
 
-
 /**************** header & footer ********************/
+
 .logo-img {
     WIDTH: 216px !important;
     height: auto;
     margin-left: 50px;
 }
-
 header.barre-navigation {
     display: flex;
     flex-direction: row;
@@ -76,12 +46,7 @@ header.barre-navigation {
     align-items: center;
     height: 80px;
     box-shadow: 0px 4px 14px 10px #00000008;
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-    /* margin-bottom:38px; */
 }
-
-
-
 ul#menu-menu-principal {
     display:block;
     display: flex;
@@ -106,9 +71,7 @@ ul#menu-menu-principal li a:hover
 
 ul#menu-footer {
     display: flex;
-    /* width: 43%; */
     list-style: none;
-    /* margin-left: 330px; */
     justify-content: center;
     flex-direction: row;
     gap: 86px;
@@ -147,19 +110,15 @@ opacity: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    /* background-color: rgba(0, 0, 0, 0.5); */
     background-color:black;
 }
 
 .modal-content {
     background-color: #fff;
     margin: 2% auto;
-    /* padding: 20px; */
     border-radius: 8px;
     width: 100%;
     max-width: 597px;
-    /* top:10px; */
-    /* position: relative; */
     background-image: url('../assets/Contact-header.png');
     background-repeat: repeat-x;
     background-size:auto;
@@ -169,12 +128,10 @@ opacity: 0;
     
 }
 dialog::backdrop {
-    /* background: rgba(0, 0, 0, 1); Arrière-plan noir opaque */
     background: rgba(0, 0, 0, 0.7);
 }
 
 dialog form{
-    /* margin-top:70px; */
     display: flex;
     flex-direction: column;
     gap: 19px;
@@ -191,7 +148,7 @@ dialog form{
     height: 230px;
     width: 100%;
 }
-/* marge haute du formulaire de la modale de contact*/
+
 div#wpcf7-f58-o1 {
     margin-top: 80px;
 }
@@ -209,6 +166,7 @@ div#wpcf7-f58-o1 {
     height: 50px;
     width: 100%;
 }
+
 .bouton-envoyer p input
 {
     border-radius: 2px;
@@ -234,7 +192,6 @@ div#wpcf7-f58-o1 {
     height: 450px;
 }
 
-
 form label
 {
     font-family: "Space Mono", monospace; 
@@ -243,6 +200,7 @@ form label
     font-size: 12px;
     color: black;
 }
+
 .nom input,.email input,.refphoto input
 {
     border-radius: 8px;
@@ -252,6 +210,7 @@ form label
     width: 100%;
     max-width: 263px;
 }
+
 .message textarea{
     max-width: 263px;
     width:100%;
@@ -274,11 +233,6 @@ width:100%;
 
 
 /*************Single photo************************/
-section{
-    /* padding-left: 50px;
-    padding-right: 50px; */
-
-}
 .photo-globale
 {
 display:flex;
@@ -347,6 +301,12 @@ section.photo-contact-navigation {
     border-radius: 2px;
     box-shadow: 0px 2px 1px 0px #00000005;
 }
+.photo-contact-navigation input[type="button"]:hover
+{
+    background: black;
+    color:white;
+ 
+}
 
 .ligne-footer
 {
@@ -354,10 +314,6 @@ section.photo-contact-navigation {
     width: 100%;
 }
 
-/* .petite-separation {
-    border-top: 1px solid #000; 
-    width: 564px;
-} */
 .petite-separation {
     border-top: 1px solid #000;
     width: 92%;
@@ -400,13 +356,14 @@ section#photos-apparentees {
     width:100%;
     margin-top: 52px;
 }
-.photo-app-conteneur1,.photo-app-conteneur
+.photo-app-conteneur
 {
     width: 50%;         
     height: 495px;     
     overflow: hidden;      
     position:relative;
 }
+
 .photo-app-conteneur .photo-app
 {
     width: 100%;
@@ -489,7 +446,6 @@ section.photo-contact-navigation {
     object-fit: cover;
     position:absolute;
     top: 10px;
-    /* left: 550px; */
     left: 90%;
 
 }
@@ -503,10 +459,6 @@ section.photo-contact-navigation {
 {
     display:none;
 }
-/* img.img-photo-suivante.wp-post-image.lazyloaded {
-    width: 81px;
-    height: 71px;
-} */
 
 .photo-precedente img,.photo-suivante img{
     width: 81px;
@@ -547,10 +499,6 @@ display:none;
     width: 100%;
 }
 
-/* section.photo-hero-header.lazyloaded {
-    background-position: center;
-    background-repeat: no-repeat;
-} */
 
 section.photo-hero-header.lazyloaded {
     background-position: center;
@@ -571,8 +519,6 @@ section.photo-hero-header.lazyloaded {
     line-height: 142.18px;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
-    /* text-align: center; */
-    /* color:white; */
     color: transparent;
     -webkit-text-stroke: 2px #fff;
     text-transform: uppercase;
@@ -583,8 +529,6 @@ section.photo-hero-header.lazyloaded {
 /**************section album photo********************/
 
 .photo-album {
-    /* width:39%; */
-    /* height: 495px; */
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
     grid-gap: 10px; 
@@ -633,7 +577,6 @@ section.photo-hero-header.lazyloaded {
 }
 
 input#bouton-charger-plus {
-    /* width: 272px; */
     border-radius: 2px;
     background-color: #D8D8D8;
     box-shadow: 0px 2px 1px 0px #00000005;
@@ -653,7 +596,6 @@ input#bouton-charger-plus {
     border-radius: 8px;
     border: 1.3px 0px 0px 0px;
     border-color:#B8BBC2;
-    /* appearance: none;  */
     
 }
 
@@ -666,7 +608,6 @@ select option:nth-child(1)
     border-color: #215AFF;
     border-radius: 8px 8px 0px 0px;
     border: 1.3px 0px 0px 0px;
-    /* background-color: #FFD6D6; */
 
 }
 
@@ -717,8 +658,6 @@ select option:nth-child(1)
     }
 
     .photo-album-conteneur {
-        /* padding-left: 50px; */
-        /* padding-right: 50px; */
         margin-top: 1.8rem;
         display: flex;
         flex-direction: column;
@@ -727,8 +666,6 @@ select option:nth-child(1)
     }
 
     .photo-album {
-        /* width: 39%; */
-        /* height: 495px; */
         display: grid    ;
         grid-template-columns: repeat(1, 1fr);
         grid-gap: 10px;
@@ -738,10 +675,8 @@ select option:nth-child(1)
         width: 18.75rem;
         height: 2.91rem;
         padding: 11px 18px 11px 18px;
-        /* gap: 0px; */
         border-radius: 8px;
         border: 1.3px 0px 0px 0px;
-        /* border-color: #B8BBC2; */
     }
 
     .photo-album-image {
@@ -752,9 +687,6 @@ select option:nth-child(1)
         height: 48vh;
     }
 }
-
-
-
 
 
 /************************fin Front page******************************/
@@ -948,8 +880,6 @@ p#lightbox-reference,p#lightbox-categorie  {
 
 @media (max-width: 767px) {
 
-
-
     .photo-lightbox-precedente {
         position: fixed;
         top: 90%;
@@ -997,8 +927,6 @@ p#lightbox-reference,p#lightbox-categorie  {
     #menu-menu-principal.menu-ouvert
     {
         display:block;
-        /* display: flex; */
-        /* flex-direction: column; */
         background-color:#E00000;
         width: 100%;
         height: 100vh;
@@ -1018,8 +946,6 @@ p#lightbox-reference,p#lightbox-categorie  {
     .photo-image
     {
         width: 80%;
-        /* width: 265px; */
-        /* height: 379px; */
         height: 67vh;
         margin: 1px auto;
     }
@@ -1033,9 +959,6 @@ p#lightbox-reference,p#lightbox-categorie  {
         width: 85%;
         justify-content: space-between;
     }
-    
-
-
 
     ul#menu-menu-principal
     {
@@ -1050,27 +973,17 @@ p#lightbox-reference,p#lightbox-categorie  {
     ul#menu-menu-principal li{
 
         text-align: center;
-        /* margin-bottom:18px; */
-        /* font-size: 44px; */
         font-weight: 400;
-        /* line-height: 65.16px;
-        text-underline-position: from-font;
-        text-decoration-skip-ink: none; */
         width:100%
     
     }
-
-    
     
     ul#menu-menu-principal li a {
         font-size: 2.5rem;
         color: white;
         font-weight: 400;
-        /* line-height: 65.16px;
-        text-underline-position: from-font;
-        text-decoration-skip-ink: none; */
-
     }
+
     li#menu-item-65, li#menu-item-61{
         padding-bottom: 1.2rem;
     }
@@ -1083,16 +996,13 @@ p#lightbox-reference,p#lightbox-categorie  {
         justify-content: center;
         height: 5.15rem;
         width: 100%;
-
     }
-    
 
     nav.photo-menu-principal {
         width: 100%;
         z-index: 99;
         position: absolute;
         top: 92px;
-        /* margin-top: 80px; */
     }
 
     .menuBurger
@@ -1100,13 +1010,7 @@ p#lightbox-reference,p#lightbox-categorie  {
         display:block;
         border:none;
         background-color: white;
-
         }
-
-    /* section.photo-globale {
-            width: 80%;
-            margin: auto;
-        } */
 
     .photo-details
         {
@@ -1131,15 +1035,6 @@ p#lightbox-reference,p#lightbox-categorie  {
         margin: 52px auto;
     }
 
-    
-    
-   /* .conteneur1, .photo-app-conteneur {
-        width: 317px;
-        height: 278px;
-        overflow: hidden;
-        position: relative;
-
-    } */
     .conteneur1, .photo-app-conteneur {
         width: 90%;
         height: 49vh;
@@ -1148,7 +1043,6 @@ p#lightbox-reference,p#lightbox-categorie  {
         margin: auto;
     }
 
-
     .photo-bouton {
         display: flex;
         flex-direction: column;
@@ -1156,26 +1050,22 @@ p#lightbox-reference,p#lightbox-categorie  {
         align-items: flex-start;
     }
 
-
-    /*************************************/
     .logo-container {
-        width: 138px; /* Largeur définie */
-        height: auto; /* Hauteur ajustée automatiquement */
-        display: flex; /* Permet de mieux gérer le contenu */
-        justify-content: center; /* Centre horizontalement */
-        align-items: center; /* Centre verticalement */
-        overflow: hidden; /* Coupe ce qui dépasse */
+        width: 138px; 
+        height: auto; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        overflow: hidden; 
     }
     
     .logo-img {
-        max-width: 100%; /* Empêche l'image de dépasser la largeur de son conteneur */
-        height: auto; /* Maintient les proportions de l'image */
-        object-fit: contain; /* Assure un ajustement propre */
+        max-width: 100%; 
+        height: auto; 
+        object-fit: contain; 
         margin-left: 0px;
     }
    
-    /**************************************/
-
     .petite-separation
     {
         width:100%;
@@ -1203,18 +1093,7 @@ p#lightbox-reference,p#lightbox-categorie  {
     padding-left:0;
     padding-right:0;
     }
-    /* section#photos-apparentees {
-        padding-left: 0;
-        padding-right: 0;
-        margin-top: 23px;
-        
-    } */
-    /* section#photos-apparentees {
-        padding-left: 0;
-        padding-right: 0;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-    } */
+
     section#photos-apparentees {
         padding-left: 0;
         padding-right: 0;
@@ -1224,10 +1103,6 @@ p#lightbox-reference,p#lightbox-categorie  {
         flex-direction: column;
         align-items: center;
     }
-
-
-
-
 
     .photo-navigation
     {
@@ -1268,29 +1143,28 @@ p#lightbox-reference,p#lightbox-categorie  {
 
 /***********modal de contact********************/
 dialog form {
-    /* margin-top: 70px; */
-    display: flex
-;
+    display: flex;
     flex-direction: column;
     gap: 3.5rem;
     margin: auto;
     width: 69%;
-    /* justify-content: space-between; */
 }
+
 .formulaire-contact {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
     height: 80%;
-    /* justify-content: space-between; */
 }
+
 .nom, .email, .refphoto {
     height: 3rem;
-    /* padding-top: 0; */
 }
+
 .message{
     height: 10rem;
 }
+
 dialog#contact-modal {
     height: 100vh;
 }

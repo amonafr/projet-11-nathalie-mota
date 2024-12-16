@@ -1,15 +1,17 @@
+/*
+ script permettant d'afficher la modale de contact au clic sur l'option 
+de menu contact et au clic sur le bouton contact 
+*/
+
 document.addEventListener('DOMContentLoaded', function() {
     var contactLink = document.getElementById('menu-item-54'); 
-    // var modal = document.getElementById('contact-modal'); 
     var modal = document.getElementById('contact-modal'); 
     var contactPrincipal=document.getElementById('contact-principal'); 
     var contactbouton=document.getElementById('contact-button');
-    console.log("je suis dans la modale" + modal)
 
     if (contactLink && modal) {
         contactLink.addEventListener('click', function(event) {
             event.preventDefault(); 
-            // modal.style.display = 'block'; 
             modal.showModal();
             document.getElementById('ref-photo').value = '';
             contactPrincipal.style.display = 'block'; 
@@ -20,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (contactbouton) {
         contactbouton.addEventListener('click', function(event) {
             event.preventDefault(); 
-            // modal.style.display = 'block'; 
             let reference = this.dataset.reference;
             console.log(reference);
             modal.showModal();
@@ -29,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         });
     }
-
-
 
     window.addEventListener('click', function(event) {
         if (event.target === modal) {

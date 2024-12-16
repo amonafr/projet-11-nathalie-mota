@@ -1,3 +1,7 @@
+// script photo-filtre.js permettant d'appeler la fonction photos_tri via ajax au 
+// changement du filtre du formulaire et d'afficher les photos
+//met à jour les attributs categorie format et cletri du bouton charger plus
+
 (function ($) {
     $(document).ready(function () {
 
@@ -19,7 +23,6 @@
             $('#bouton-charger-plus').attr('data-cletri', $('.photos-form-tri').find('select[name=cletri]').val());
             $('.message-erreur').remove();
 
-            // console.log(data);
             
             fetch(ajaxurl, {
                 method: 'POST',
@@ -37,7 +40,7 @@
                     return;
                 }
 
-                // Mise à jour de la section album photo avec le HTML renvoyé
+                // Mise à jour de la section album photo avec le HTML envoyé
                 $('.photo-album').empty();
                 $('.photo-album').append(body.data.html);
                 $('#bouton-charger-plus').attr('data-postid',body.data.lastphoto )
@@ -51,13 +54,10 @@
 
         // Ecoute des evenements change au niveau des selects
         $('.photos-form-tri select').change(function () {
-// ******
             const selectedOption = $(this).find('option:selected');
             if (selectedOption.hasClass('empty-option')) {
                 $(this).prop('selectedIndex', 0); // Réinitialise la sélection à l'option par défaut
             } 
-                // envoyerAjax(); // Appelle la fonction AJAX seulement si ce n'est pas une "empty-option"
-// ****
             envoyerAjax();
         });
 

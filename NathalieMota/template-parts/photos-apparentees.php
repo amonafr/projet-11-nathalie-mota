@@ -1,4 +1,7 @@
 <?php
+// template partiel appelé pour afficher les photos apparentées dans single-photo
+//les photos à récupere sont de même catégorie que la single photo
+
 $categories = get_the_terms(get_the_ID(), 'categorie');
 if ($categories && !is_wp_error($categories)) {
     $category_slug = $categories[0]->slug;
@@ -30,7 +33,6 @@ if ($photos_apparentees->have_posts()) :
                 the_post_thumbnail('meduim',['class' => 'photo-app']);
              }
             echo '<div class="legende-photo">';
-
                 echo '<a href="#" 
                 data-urlphoto="'. esc_url($photo_url) .'"  
                 data-idphoto="' . get_the_ID() . '" 

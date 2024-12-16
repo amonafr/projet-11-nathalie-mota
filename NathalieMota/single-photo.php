@@ -1,3 +1,5 @@
+<!-- Page permettant d'afficher une photo avec deux photos de même catégorie -->
+
 <?php get_header(); ?>
 
 <main class="single-photo-container">
@@ -6,7 +8,7 @@
     if ( have_posts() ) :
         while ( have_posts() ) : the_post();  ?>
     
-        <!-- Affichage de l'image mise en avant -->
+    <!-- Affichage de l'image mise en avant -->
     <section class="photo-globale">
         
         <div class="photo-info">
@@ -53,7 +55,6 @@
                     $next_post = get_next_post();
                 ?>
                 <div class="photo-suivante" id="miniature-suivante">
-                <!-- debut chgt -->
                     <?php if ($next_post): ?>
                         <?php echo get_the_post_thumbnail($next_post->ID, 'thumbnail', ['class' => 'img-photo-suivante']); ?>
                     <?php endif; ?>
@@ -63,7 +64,6 @@
                         <?php echo get_the_post_thumbnail($prev_post->ID, 'thumbnail', ['class' => 'img-photo-suivante']); ?>
                     <?php endif; ?>
                 </div> 
-                <!-- fin changement -->
                 <div class="photo-fleche" >
                     <?php if ($prev_post): ?>
                      <a class="photo-fleche_gauche" href="<?php echo get_permalink($prev_post->ID); ?>"><img  src="<?php echo get_template_directory_uri() . '/assets/fleche-gauche.png'?>" alt="fleche gauche"></a>
@@ -86,9 +86,6 @@
         echo '<p>Aucune photo trouvée.</p>';
     endif;
     ?>
-
-
-
 </main>
 
 <?php get_footer(); ?>

@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header(); 
 
 echo '<main class="photo-accueil">';
-
+// Affichage d une photo  dans le hero header
 $args = [
     'post_type' => 'photo', 
     'orderby'        => 'rand',
@@ -32,6 +32,7 @@ if ( $query->have_posts() ) : ?>
 wp_reset_postdata(); ?>
 
 <!-- formulaire pour le filtres envoi des paramètres ajax-->
+<!-- Les catégories et les formats sont extraits à l'aide des requetes de la BD-->
 
 <section class="photo-album-conteneur">
     <div class="photo-criteres-recherche">
@@ -53,13 +54,12 @@ wp_reset_postdata(); ?>
                     echo '<option value="' . esc_attr( $category->slug ) . '">' . esc_html( $category->name ) . '</option>';
                         }
                      ?>
-
                 </select>
 
                 <select id="format" name="format">
-                  <option value="" hidden>FORMATS</option>
-                  <option value="" class="empty-option"></option>
-                  <?php
+                   <option value="" hidden>FORMATS</option>
+                   <option value="" class="empty-option"></option>
+                   <?php
                         $formats = get_terms( array(
                          'taxonomy'   => 'format',
                          'hide_empty' => true, // N'afficher que les catégories avec des posts
@@ -82,7 +82,7 @@ wp_reset_postdata(); ?>
     </div>
     
 
-<!-- Affichage des photos -->
+<!-- Affichage des photos par defaut à partir des plus récentes -->
 
 <?php
 $cletri='DESC';
@@ -101,34 +101,7 @@ $photos_apparentees = new WP_Query($args);
 if ($photos_apparentees->have_posts()) :
     echo '<div class="photo-album"> ';
     while ($photos_apparentees->have_posts()) : $photos_apparentees->the_post();
-        echo '<div class="photo-album-image">';
-            $reference_photo_album = get_post_meta( get_the_ID(), 'reference', true );
-            $photo_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
-       
-           $categories = get_the_terms(get_the_ID(), 'categorie');
-        if ($categories && !is_wp_error($categories)) {
-                $categorie_photo_album = $categories[0]->slug;
-                };
-
-
-            if (has_post_thumbnail()) {
-                the_post_thumbnail('meduim',['class' => 'photo-album-img']);
-             }
-            // echo '<div class="legende-photo" style="background-image: url(' . get_template_directory_uri() . '/assets/icon-oeil.png)">';
-            echo '<div class="legende-photo">';
-                echo '<a href="#" data-urlphoto="'. esc_url($photo_url) .'" 
-                                  data-refphoto="' . $reference_photo_album . '" 
-                                  data-categorie="'. $categorie_photo_album . '" 
-                                  id="lien-light-box" class="lightbox-link"><img class="fullscreen" src="' . get_template_directory_uri() . '/assets/Icon_fullscreen.png" alt="icone fullscreen" class="icon-fullscreen" id="icone-light-box"></a>';
-
-                // echo '<a href="#"><img class="fullscreen" src="' . get_template_directory_uri() . '/assets/Icon_fullscreen.png" alt="icone fullscreen" class="icon-fullscreen"></a>';
-                echo '<a href="'. get_permalink(get_the_ID()) .'"><img class="oeil-icon" src="' . get_template_directory_uri() . '/assets/icon-oeil.png" alt="icone oeil" class="lien-oeil-icon"></a>';
-                echo '<div class="legende-photo-texte">';   
-                    echo '<p>' . $reference_photo_album . '</p>';
-                    echo '<p>' . $categorie_photo_album .'</p>';
-                echo '</div>';
-            echo '</div>';
-        echo '</div>';
+        echo afficher_photos(get_the_ID());
         $derniere_photo=get_the_ID();
     endwhile;
     echo '</div>';
@@ -138,7 +111,9 @@ else :
 endif;
 
 ?>
-
+ <!-- bouton charger attribut permettant de stocker les paramètres ajax ainsi que les filtres -->
+<!-- les filres sont initialisés au premier chargement mais ils sont mis à jour
+à chaque selection nouvelle selection dns le formulaire -->
 
 <div class="photo-charger-plus">
  

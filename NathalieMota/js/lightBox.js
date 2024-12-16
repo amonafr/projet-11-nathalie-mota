@@ -1,4 +1,10 @@
 
+/*
+Ce script permet d'afficher, de fermer  la lightbox et de naviguer dans
+les photos de la page. Les photos en mémoire sont réinitialisées lorsque le contenu est 
+mis à jour soit par les filtres soit par le bouton charger plus
+*/
+
 document.addEventListener('DOMContentLoaded', function () {
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightbox-image');
@@ -10,16 +16,16 @@ document.addEventListener('DOMContentLoaded', function () {
     let photos = [];
     let currentIndex = 0;
 
-    // Fonction pour initialiser les événements
     function initLightboxEvents() {
-        // Réinitialiser les photos
+    // Réinitialiser les photos supprime les anciens lisners au changement de filtre
         const oldLinks = document.querySelectorAll('.lightbox-link');
         oldLinks.forEach(link => {
         link.removeEventListener('click', openLightboxHandler);
         });
+
         photos = [];
 
-        // Rechercher tous les liens lightbox actuels
+    // Rechercher tous les liens lightbox actuels
         const lightboxLinks = document.querySelectorAll('.lightbox-link');
 
         lightboxLinks.forEach((link, index) => {
@@ -29,12 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 categorie: link.dataset.categorie,
             };
             photos.push(photo);
+            link.addEventListener('click', openLightboxHandler);
 
-            link.addEventListener('click', (event) => {
-                event.preventDefault();
-                currentIndex = index;
-                openLightbox();
-            });
         });
     }
     function openLightboxHandler(event) {
@@ -42,13 +44,12 @@ document.addEventListener('DOMContentLoaded', function () {
         currentIndex = Array.from(document.querySelectorAll('.lightbox-link')).indexOf(event.currentTarget);
         openLightbox();
     }
-    // Ouvrir la lightbox
+
     function openLightbox() {
         updateLightbox();
         lightbox.style.display = 'flex';
     }
 
-    // Fermer la lightbox
     function closeLightbox() {
         lightbox.style.display = 'none';
     }
@@ -78,17 +79,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Fermer la lightbox en cliquant sur l'overlay
     if (overlay) {
         overlay.addEventListener('click', closeLightbox);
     }
     document.getElementById('lightbox-croix').addEventListener('click', function(e) {
         e.preventDefault();
         closeLightbox();
-        // Ajoutez ici le code pour fermer la lightbox
     });
-
-    // document.getElementById('lightbox-croix').addEventListener('click', closeLightbox);
 
     // Initialiser les événements pour la première fois
     initLightboxEvents();
@@ -97,8 +94,4 @@ document.addEventListener('DOMContentLoaded', function () {
         initLightboxEvents();
     });
 
-    // Réattacher les événements après une mise à jour AJAX
-    // document.addEventListener('ajaxComplete', function () {
-    //     initLightboxEvents(); // Réinitialiser les événements pour les nouveaux éléments
-    // });
 });

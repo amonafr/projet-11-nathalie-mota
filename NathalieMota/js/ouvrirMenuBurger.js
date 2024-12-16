@@ -1,5 +1,6 @@
+// script gérant l'affichage et la fermeture du menu au clic sur le menu burger
+
 document.addEventListener('DOMContentLoaded', function() {
-    // const menuBurger = document.getElementById('menuMobile');
     const menuBurger = document.querySelector('.menuBurger');
 
     if (!menuBurger) {
@@ -14,24 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener sur le menu burger
     menuBurger.addEventListener('click', function() {
         Menuprincipal.classList.toggle('menu-ouvert');
-        // if (Menuprincipal.classList.contains('menu-ouvert')) {
-        //     Menuprincipal.style.display = 'block';
-
-        // } else{
-        //     Menuprincipal.style.display = 'none';
-        // }  
-        console.log(Menuprincipal);
-        console.log("je suis dans ouvrir menu burger");
-        lines[0].classList.toggle('rotate-down');  // première ligne
-        lines[1].classList.toggle('hide');         // ligne du milieu
-        lines[2].classList.toggle('rotate-up');    // troisième ligne
+        lines[0].classList.toggle('rotate-down');  
+        lines[1].classList.toggle('hide');         
+        lines[2].classList.toggle('rotate-up');    
     });
     if (menuBurger.getAttribute('aria-expanded') === 'true') {
         menuBurger.setAttribute('aria-expanded', 'false');
     } else {
         menuBurger.setAttribute('aria-expanded', 'true');
     }
-
-
 
 });

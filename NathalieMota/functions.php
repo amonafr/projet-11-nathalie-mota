@@ -14,48 +14,22 @@ function NathalieMota_enqueue_styles() {
     wp_enqueue_script('navigationPhoto', get_template_directory_uri() . '/js/navigationPhoto.js');
     wp_enqueue_script('ouvrirMenuBurger', get_template_directory_uri() . '/js/ouvrirMenuBurger.js',[],'1.0',true);
     wp_enqueue_script('lightBox', get_template_directory_uri() . '/js/lightBox.js',[],'1.0',true);
-
-
-    
-    wp_enqueue_script( 
-        'chargerPlus', 
-        get_template_directory_uri() . '/js/charger-plus.js', [ 'jquery' ], 
-      '1.0', 
-      true 
-   );
-   wp_enqueue_script( 
-    'photo-filtre', 
-    get_template_directory_uri() . '/js/photo-filtre.js', [ 'jquery' ], 
-  '1.0', 
-  true 
-);
-
-   
-    // if( is_single() ) {
-    // wp_enqueue_script('charge-modal', get_template_directory_uri() . '/js/charge-modal.js',[ 'jquery' ],'1.0',true );
-    // wp_localize_script('charge-modal', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
-// }
+    wp_enqueue_script('chargerPlus',get_template_directory_uri() . '/js/charger-plus.js', [ 'jquery' ],'1.0', true);
+    wp_enqueue_script('photo-filtre',get_template_directory_uri() . '/js/photo-filtre.js', [ 'jquery' ],'1.0',true);
 }
 
 add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
 
-
 function NathalieMota_add_space_mono_font() {
-    // echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
-    // echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
     wp_enqueue_style('space-mono-font', 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap', [], null);
 }
 add_action('wp_head', 'NathalieMota_add_space_mono_font');
 
 
-
-
 add_action( 'wp_ajax_photo_charger_plus', 'photo_charger_plus' );
 add_action( 'wp_ajax_nopriv_photo_charger_plus', 'photo_charger_plus' );
 
-
-
-
+//  fonction d'affichage d une photo 
 function afficher_photos($id)
 {
    $html='';
@@ -84,7 +58,9 @@ return $html;
 
 }
 
-//fonction permettant de charger les photos au clic sur le bouton afficher plus
+//fonction executé à la suite du  clic sur le bouton afficher plus via un appel ajax
+// elle reçoit en paramètre l'id de la derniere photo affiché ainsi que les filtres
+//saisies sur le formulaire
 
 function photo_charger_plus() {
   
@@ -122,6 +98,8 @@ function photo_charger_plus() {
     $format = isset($_POST['format']) ? sanitize_text_field($_POST['format']) : '';
     $date_de_reference = get_post_field('post_date', $post_id);
 
+    // requete d'interrogation des données tenant compte des filtres quand ils sont saisies
+    
     if ($cletri==='DESC'){
         $args = [
             'post_type' => 'photo',
@@ -155,7 +133,6 @@ function photo_charger_plus() {
     ];
 
     }
-
 
     if (isset($categorie) && !empty($categorie) && ($categorie !=''))
     {
@@ -209,6 +186,9 @@ if (!empty($html) && !empty($ref_derniere_photo)) {
     wp_die();
 }
 
+// fonction executée lors de l'appel ajax fait lors de la selection d'un filtre 
+// dans le formulaire la requete pour récuperer les données filtrées selon 
+//reçoit les paramètres categorie format clé de tri 
 
 function photos_tri() {
     if( 
@@ -257,7 +237,6 @@ function photos_tri() {
     $photos_chargees = new WP_Query($args);
     
     if ($photos_chargees->have_posts()) :
-        // echo '<div class="photo-album"> ';
         while ($photos_chargees->have_posts()) : $photos_chargees->the_post();
             $html.= afficher_photos(get_the_ID());
             $ref_derniere_photo=get_the_ID();
